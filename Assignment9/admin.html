@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <script src="helpers.js"></script>
+</head>
+<body>
+    <h1>Admin Panel</h1>
+
+    <h2>Clear Chat Rooms</h2>
+    <select id="clearDropdown">
+        <option value="1">Chat Room 1</option>
+        <option value="2">Chat Room 2</option>
+        <option value="3">Chat Room 3</option>
+    </select>
+    <button id="clearButton">Clear Chat</button>
+
+    <br><br>
+    <a href="index.html">Chat Rooms</a>
+
+    <h2>System Usage Logs</h2>
+    <div id="systemlogs"></div>
+
+
+    <script>
+        let button = document.getElementById('clearButton');
+        let clearDropdown = document.getElementById('clearDropdown');
+        let systemlogs = document.getElementById('systemlogs');
+        let lineIds = {};
+        let once = true;
+
+        button.onclick = function(){
+            clearChatRoom(parseInt(clearDropdown.value));
+            lineIds = {};
+            systemlogs.innerHTML = "";
+        }
+
+        function clearChatRoom(roomId) {
+            performFetch({
+                method: 'POST',
+                url: 'clearChat.php',
+                data: {
+                    chat : roomId
+                },
+                success: function(data, status) {
+                    console.log('Chat room ' + roomId + ' has been cleared successfully.');
+                },
+                error: function(req, data, status) {
+                    console.log('Error clearing chat room ' + roomId + '. Please try again.');
+                }
+            });
+        }
+
+        // Define the getExistingEntries function
+        function getExistingEntries() {
+            performFetch({
+                method: 'GET',
+                url: 'getentries.php',
+                success: function(data, status) {
+                    console.log("Success, got the data from the server");
+                    let arrayData = JSON.parse(data);
+                    console.log(arrayData);
+                    for (let i = 0; i < arrayData.length; i++) {
+                        createEntry(arrayData[i]['id'], arrayData[i]['name'], arrayData[i]['message'], arrayData[i]['chat'], arrayData[i]['time']);
+                    }
+                    // Call getExistingEntries again after a delay
+                    setTimeout(getExistingEntries, 1000);
+                    once = false;
+                },
+                error: function(req, data, status) {
+                    console.log("Error, couldn't get file");
+                    setTimeout(getExistingEntries, 1000);
+                }
+            });
+        }
+
+        // Call getExistingEntries for the first time
+        getExistingEntries();
+
+        function createEntry(id, username, msg, chatRoom, time) {
+            if (!lineIds[id]) {
+                systemlogs.innerHTML += `${time}: Chat Room ${chatRoom} - ${username}: ${msg} <br>`;
+                lineIds[id] = true;
+            }
+        }
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Macro 6</title>
+</head>
+<style>
+    body{
+        background-color: black;
+        padding-top: 50px; 
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+    #startScreen,#gameScreen,#gameOverScreen, #selectDiff,#newHS{
+        background-color: black;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+    #gameScreen,#gameOverScreen, #selectDiff{
+        display:none;
+    }
+    .title{
+        font-size: 30px;
+    }
+    #caption{
+        font-size:18px;
+    }
+    .title,#caption{
+        font-weight: bold;
+        font-family:'Courier New', Courier, monospace;
+        color:white;
+        margin-bottom: 20px;
+    }
+    #startButton,#easy, #medium,#hard{
+        font-family:'Courier New', Courier, monospace;
+        font-weight: bold;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: white;
+        width: 100px;
+        height: 50px;
+        font-size: 24px;
+        cursor: pointer;
+        margin-bottom: 20px;
+    }
+    #time, #timestamp, #timeNow1,#bestTime1,#timeNow,#bestTime{
+        font-family:'Courier New', Courier, monospace;
+        font-weight: bold;
+        color:white;
+        font-size:18px;
+        padding-bottom: 15px;
+    }
+    #game{
+        float:inline-start;
+    }
+    .token{
+        width:100px;
+        height:100px;
+    }
+    #again{
+        font-family:'Courier New', Courier, monospace;
+        font-weight: bold;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: white;
+        width: 200px;
+        height: 50px;
+        font-size: 28px;
+        cursor: pointer;
+    }
+    #newHS{
+        background-color: white;
+        width:300px;
+        height:150px;
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        font-size: 20px;
+        font-family:'Courier New', Courier, monospace;
+        font-weight: bold;
+        position: absolute;
+        display: none;
+    }
+    #tag,#name,#enter{
+        text-align: center; 
+        font-family:'Courier New', Courier, monospace;
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+</style>
+<body>
+    <div id="startScreen">
+        <div class="title">Memory Matching Madness!</div>
+        <div id="caption">Play a fast-paced game of "memory" and try to beat your best time!</div>
+        <div id="startButton">Start!</div>
+    </div>
+
+    <div id="selectDiff">
+        <div class="title">Select Difficulty</div>
+        <div id="easy">Easy</div>
+        <div id="medium">Medium</div>
+        <div id="hard">Hard</div>
+    </div>
+
+    <div id="gameScreen">
+        <div class="title">Ready, Set, Match!</div>
+        <div id="timestamp">Time: <span id="time"></span></div>
+        <div id="game">
+
+        </div>
+    </div>
+
+    <div id="gameOverScreen">
+        <div class="title">Game Over!</div>
+        <div id="timeNow1">Your time: <span id="timeNow"></span></div>
+        <div id="bestTime1">Best time: <span id="bestTime"></span></div>
+        <div id="again">Play Again!</div>
+    </div>
+
+    <div id="newHS">
+        <div id="tag">New High-Score!</div>
+        <div>Enter Your Name:</div>
+        <input type="text" name="name" id="name" maxlength="10">
+        <button id="enter">Enter</button>
+    </div>
+    <script src="custom.js"></script>
+</body>
+</html>

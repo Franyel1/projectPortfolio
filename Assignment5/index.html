@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Macro 5</title>
+    <style>
+        body{
+            display: flex;
+            align-items:center;
+            flex-direction: column;
+            justify-items:center;
+            background-color: black;
+            background-image: url(images/corkboard.jpg);
+        }
+        header{
+            font-family: sans-serif;
+            color: white;
+            font-size: 30px;
+            font-weight: 900;
+            text-shadow: black 5px 3px 2px;
+            padding-top: 50px; 
+            padding-bottom: 30px;
+
+        }
+        #add{
+            position:fixed;
+            bottom: 50px;
+            right:50px;
+            cursor:pointer;
+        }
+        #post{
+            width:100%;
+            height:fit-content;
+            display: flex;
+            flex-wrap: wrap;
+
+        }
+        .postIt{
+            width:100px;
+            height:100px;
+            margin:20px;
+            padding: 10px;
+            position:relative;
+
+            font-family: sans-serif;
+            font-size: 18px;
+            -webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+            -moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+            box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+        }
+        #seasonView{
+            position: fixed;
+            top: 25px;
+            right:50px; 
+            width:150px;
+        }
+        #compOrNot{
+            position: fixed;
+            width:150px;
+            right:50px;
+        }
+        .deleteButton{
+            width: 20px;
+            height:20px;
+
+            position: absolute;
+            top:0;
+            right:0;
+        }
+
+        #addNew{
+            padding:25px;
+            padding-top: 50px;
+            padding-bottom :100px;
+            background-color: white;
+            font-family: sans-serif;
+            font-size: 18px;
+            border-radius: 25px;
+            position:absolute;
+            top: 30%;
+            width: 350px;
+            display:none;
+            z-index: 999;
+
+        }
+        #addNew span{
+            font-weight: 900;
+            font-family: sans-serif;
+            font-size: 24px;
+        }
+        #title{
+            width:340px;
+        }
+        #category{
+            width:349px;
+        }
+        #description{
+            width:340px;
+            resize: none;
+            height: 70px;
+        }
+        #error, #error2{
+            background-color: red;
+            width:340px;
+            height: 40px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            display:none;
+        }
+        #postInfo{
+            padding:25px;
+            padding-top: 50px;
+            padding-bottom :100px;
+            background-color: white;
+            font-family: sans-serif;
+            font-size: 18px;
+            border-radius: 25px;
+            position:absolute;
+            top: 30%;
+            width: 350px;
+            display:none;
+            z-index: 999;
+        }
+        #postName,
+        #postSeason2,
+        #postSeason,
+        #postDes,
+        #postCrea2,
+        #postCrea,
+        #postAcc2,
+        #postAcc {
+            display:inline;
+            font-size:16px;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+        #postName{
+            font-weight:900;
+            font-size: 24px;
+        }
+
+        #postCrea2{
+            margin-top: 20px;
+            /*border-top: solid black;*/
+        }
+
+        .checkBox{
+            position: absolute;
+            bottom:0;
+            left:0;
+        }
+        #editPanel{
+            padding:25px;
+            padding-top: 50px;
+            padding-bottom :100px;
+            background-color: white;
+            font-family: sans-serif;
+            font-size: 18px;
+            border-radius: 25px;
+            position:absolute;
+            top: 30%;
+            width: 350px;
+            z-index: 999;
+            display:none;
+        }
+        .editButton{
+            width: 20px;
+            height:20px;
+
+            position: absolute;
+            bottom:0;
+            right:0;
+        }
+    </style>
+</head>
+<body>
+    <header>Seasonal To-Do List</header>
+    <select name="seasonView" id="seasonView">
+        <option value="showAll" selected>Show all Seasons</option>
+        <option value="spring">Spring</option>
+        <option value="summer">Summer</option>
+        <option value="fall">Fall</option>
+        <option value="winter">Winter</option>
+    </select>
+    <select name="compOrNot" id="compOrNot">
+        <option value="all" selected>Show all</option>
+        <option value="notCompleted">Not Completed</option>
+        <option value="completed">Completed</option>
+    </select>
+
+    <div id="addNew">
+        <span>Add New Item</span><br><br>
+        <form id="form1">
+            <div id="error"> Please completely fill out the form</div>
+            Title:<br>
+            <input type="text" name="title" id="title" value="">
+            <br><br>
+            Category:<br>
+            <select name="category" id="category">
+                <option value="spring">Spring</option>
+                <option value="summer">Summer</option>
+                <option value="fall">Fall</option>
+                <option value="winter">Winter</option>
+            </select>
+            <br><br>
+            Description:<br>
+            <textarea name="description" id="description"></textarea>
+            <br>
+            <button id="save">Save</button>
+            <button id="cancel">Cancel</button>
+        </form>
+    </div>
+
+    <div id="editPanel">
+        <span><b>Edit Post</b></span><br><br>
+            <div id="error2"> Please don't leave anything blank</div>
+            Title:<br>
+            <input type="text" name="titleEdit" id="titleEdit" value="">
+            <br><br>
+            Category:<br>
+            <select name="categoryEdit" id="categoryEdit">
+                <option value="spring">Spring</option>
+                <option value="summer">Summer</option>
+                <option value="fall">Fall</option>
+                <option value="winter">Winter</option>
+            </select>
+            <br><br>
+            Description:<br>
+            <textarea name="descriptionEdit" id="descriptionEdit"></textarea>
+            <br>
+            <button id="save2">Save</button>
+            <button id="cancel2">Cancel</button>
+    </div>
+
+    <div id="postInfo">
+        <div id="postName"></div><br><br>
+        <div id="postSeason2">Season: </div>
+        <div id="postSeason"></div><br><br>
+        <div id="postDes"></div><br><br>
+        <div id="postCrea2">Date Created: </div>
+        <div id="postCrea"></div><br><br>
+        <div id="postAcc2">Last Accessed: </div>
+        <div id="postAcc"></div><br>
+        <button id="close">Close</button>
+    </div>
+
+    <div id="post"></div>
+
+
+
+
+    <img id="add" src="images/add_button.png">
+    <script src="custom.js"></script>
+</body>
+</html>

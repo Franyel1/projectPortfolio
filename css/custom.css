@@ -1,0 +1,151 @@
+@font-face {
+    font-family: doodle;
+    src: url(../fonts/RubikDoodleShadow-Regular.ttf);
+}
+@font-face {
+    font-family: var;
+    src: url(../fonts/Sixtyfour-Regular-VariableFont_BLED\,SCAN.ttf);
+}
+
+
+body{
+    margin:0;
+}
+
+
+header{
+    background-color: #2C2A4A;
+    width: 100%;
+    height: 100px;
+    font-family: var;
+    color: #DABFFF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    font-size: 30px;
+    font-weight: 1000;
+
+}
+
+#mainBack{
+    width: 100%;
+    height:600px;
+    /*background-color: #907AD6;*/
+    background-color: black;
+    
+    display: flex;
+    justify-content: center;
+}
+
+#main{
+    width:80%;
+    padding-top: 60px;
+    padding-bottom: 60px;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: #4f518c22;
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+#row1,#row2{
+    display:flex;
+    justify-content: space-around;
+    flex-direction: row;
+}
+
+.unit{
+    font-family: doodle;
+    border-radius: 10%;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    width: 5vw;
+    height: 5vw;
+    border: 2px rgb(255, 255, 255) solid;
+    margin: 10px;
+}
+.links{
+    text-decoration: none;
+}
+.unit:hover{
+    color: #cbcbed;
+    background-color: #907AD6;
+    cursor: pointer;
+}
+
+.unit:active{
+    background-color: #7556db;
+}
+
+@media only screen and (min-width: 481px) and (max-width: 960px){
+    #main{
+        flex-direction: column;
+        flex-wrap: wrap;
+        width:100%;
+    }
+    .unit{
+        width: 15vw;
+        height: 15vw; 
+        font-size: 60px;
+    }
+    #main{
+        padding-top: 0px;
+        padding-bottom: 0px;
+        padding-left: 0px;
+        padding-right: 0px;
+        justify-content: center;
+    }
+
+}
+
+@media only screen and (max-width: 480px){
+
+    #mainBack,
+    #row1,
+    #row2 {
+        flex-basis: 100%;
+        flex-shrink: 0; 
+        flex-direction: column;
+    }
+
+    .unit{
+        width: 150px;
+        height: 150px;
+        font-size: 60px;
+        padding: 0;
+    }
+    #main{
+        padding-top: 50px;
+        padding-bottom: 0px;
+        padding-left: 30vw;
+        padding-right: 0px;
+        justify-content: center;
+        width:100%;
+    }
+    #main,#mainBack{
+        height: 1900px;
+    }
+
+}
+
+footer{
+    background-color: #2C2A4A;
+    width: 100%;
+    height: 200px;
+    color: #DABFFF;
+    padding-bottom: 30px;
+
+    font-size : 25px;
+
+    display: flex;
+    align-items: end;
+    justify-content: center;
+}

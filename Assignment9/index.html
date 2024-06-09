@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Macro 8</title>
+    <script src="helpers.js"></script>
+
+    <style>
+        #chatBox{
+            display:none;
+        }
+        .chats{
+            width:700px;
+            height:500px;
+        }
+        #chat2,#chat3{
+            display:none;
+        }
+        #error{
+            background-color: red;
+            color:white;
+            display:none;
+        }
+    </style>
+
+</head>
+<body>
+    <h1>Let's Chat!</h1>
+    
+    <div id="usernameSelector">
+        Select a username: <br><br>
+        <input type="text" value="" name="usernameBox" id="usernameBox"></input>
+        <button id="usernameSubmit">Start Chatting</button>
+    </div>
+
+    <div id="chatBox">
+        <select name="dropdown" id="dropdown">
+            <option value="1">Chat Room 1</option>
+            <option value="2">Chat Room 2</option>
+            <option value="3">Chat Room 3</option>
+        </select>
+        <textarea id="chat1" class="chats" readonly></textarea>
+
+        <textarea id="chat2" class="chats" readonly></textarea>
+
+        <textarea id="chat3" class="chats" readonly></textarea>
+
+        <br>
+        <input type="text" value="" name="messageBox" id="messageBox"></input>
+
+        <button id="messageSubmit">Send Message</button>
+        <div id="error">Invalid Message</div>
+
+        <a href="admin.html">ADMIN PAGE</a>
+    </div>
+
+    <script>
+        let dropdown = document.getElementById("dropdown");
+        let usernameBox = document.getElementById("usernameBox");
+        let userSubmit = document.getElementById("usernameSubmit");
+        let usernameSelector = document.getElementById("usernameSelector");
+        let chatBox = document.getElementById("chatBox");
+        let error = document.getElementById('error');
+
+        let messageBox = document.getElementById("messageBox");
+        let messageSubmit = document.getElementById("messageSubmit");
+        let chat = document.getElementById("chat");
+        let username1;
+        let once =true;
+
+        userSubmit.onclick = function(){
+            username1=usernameBox.value;
+
+            usernameSelector.style.display = "none";
+            chatBox.style.display = "block";
+            usernameBox.value = "";
+            let allChats = document.querySelectorAll('.chats');
+            for (let i=0;i<allChats.length;i++){
+                allChats[i].scrollTop = allChats[i].scrollHeight;
+            }
+        }
+
+        dropdown.onchange = function(){
+            let allChats = document.querySelectorAll('.chats');
+            for (let i=0;i<allChats.length;i++){
+                allChats[i].style.display ="none";
+            }
+
+            let selectedRoomId = "chat" + dropdown.value;
+            document.getElementById(selectedRoomId).style.display = 'block';
+        }
+
+        // get existing entries
+        function getExistingEntries() {
+
+            // step 1: use the fetch API to grab the data.txt file from the server
+            performFetch({
+            method: 'GET',
+            url: 'getentries.php',
+            success: function(data, status) {
+                console.log("Success, got the data from the server");
+
+                // step 2: successfully retrieved file, now we need to parse
+                // it into a JavaScript array
+                let arrayData = JSON.parse(data);
+                console.log(arrayData);
+
+                // step 3: visit each element in the array and create
+                // new DOM elements for each one
+                for (let i = 0; i < arrayData.length; i++) {
+
+                    // see if we already have a DOM element with this ID -
+                    // if so, we don't want to do anything
+                    //if (!document.getElementById( arrayData[i]['id'] )) {
+
+                        // create an entry div for this item
+                        createEntry(arrayData[i]['id'], arrayData[i]['name'], arrayData[i]['message'], arrayData[i]['chat'], arrayData[i]['time']);
+
+                    //}
+                }
+
+                // in 2 seconds, do this all again to get any new entries that may have been added
+                //if (once){
+                    setTimeout(getExistingEntries, 1000);
+                    //once= false;
+                //}
+
+            },
+            error: function(req, data, status) {
+                console.log("Error, couldn't get file");
+
+                // in 2 seconds let's try again
+                setTimeout(getExistingEntries, 1000);
+            }
+            })
+
+        }
+
+        // call our function 1 time to start up the process of getting data from the server
+        getExistingEntries();
+
+        // Define an object to store the IDs of the lines and their corresponding text
+        let lineIds = {};
+
+        let isScrolling = false;
+
+        let allChats = document.querySelectorAll('.chats');
+        for (let i=0;i<allChats.length;i++){
+            allChats[i].onscroll = function(){
+                isScrolling = true;
+
+                clearTimeout(this.scrollTimeout);
+                this.scrollTimeout = setTimeout(() => {isScrolling = false;}, 250);
+            }
+        }
+
+        function createEntry(id, username, msg, chatRoom) {
+            let chat = document.getElementById("chat" + chatRoom);
+            if (!lineIds[id]) {
+                if (!isScrolling){
+                    chat.scrollTop = chat.scrollHeight;
+                }
+                
+                chat.value += `${username}: ${msg}\n`;
+            
+                lineIds[id] = true;
+            }
+        }
+
+        messageSubmit.onclick = function(event) {
+            
+            let messageText = messageBox.value;
+            if (messageText.length != 0){
+                error.style.display = "none";
+                let chatRoom = parseInt(dropdown.value);
+                messageBox.value = "";
+                let currentTime = new Date();
+                performFetch({
+                    method: 'POST',
+                    url: 'saveentry.php',
+                    data: {
+                    message: messageText,
+                    username: username1,
+                    chat: chatRoom,
+                    time :currentTime
+                    },
+                    success: function(data, status) {
+                    console.log("Success! Received this data from the server: ", data);
+                    createEntry(data, username1, messageText, chatRoom,currentTime);
+                    },
+                    error: function(req, data, status) {
+                    console.log("Error!");
+                    }
+                })
+            }
+            else{
+                error.style.display = "block";
+            }
+
+        }
+
+
+
+    </script>
+
+</body>
+</html>
