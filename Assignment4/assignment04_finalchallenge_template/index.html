@@ -1,1 +1,118 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>Design Your own Hogwarts!</title>
+    <style type="text/css">
+      #drawingBoard{
+        height:320px;
+        width:320px;
+        border: 2px black solid;
+      }
+      #screen{
+        display:flex;
+      }
+      #col2{
+        margin-left: 30px;
+      }
+      #tiles{
+        margin-top: 10px;
+        padding-top:10px;
+        border-top: 1px black solid;
+        width:750px;
+        height:fit-content;
 
+      }
+
+      .tile{
+        margin:3px;
+        float: inline-start;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+      }
+
+      .drawTile{
+        width:32px;
+        height:32px;
+        float: inline-start;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+      }
+
+      .drawTile:hover{
+        border: 3px solid red;
+      }
+
+
+    </style>
+  </head>
+
+  <body>
+    <h1>Design Your Own Hogwarts!</h1>
+
+    <div id="screen">
+      <div id="col1">
+        <div id="drawingBoard">
+
+        </div>
+      </div>
+      <div id="col2">
+        <div id="desc">Click on a tile here to select it. Then click on the map to the left to place the tile.</div>
+        <div id="tiles">
+
+        </div>
+      </div>
+    </div>
+
+    <!-- load in the image array file - this makes available a new array of all image filenames that you can use for this project -->
+    <!-- Assets courtesy of Crawl Stone Soup: https://github.com/crawl/tiles -->
+    <script src="image_array.js"></script>
+
+    <!-- write your code here -->
+    <script>
+      let board = document.getElementById("drawingBoard");
+      for(let i=0;i<100;i++)
+      {board.innerHTML += `<div class="drawTile"></div>`;}
+      
+      let tiles = document.getElementById("tiles");
+
+      for(let i=0;i<array_library.length;i++)
+      {tiles.innerHTML += `<img class="tile"src="${array_library[i]}"style="box-sizing:border-box; width:32px;height:32px;" >`;}
+
+      let src ="";
+
+      let tile = document.querySelectorAll(".tile");
+
+      let prevSelected=0;
+
+      for (let i=0;i<array_library.length;i++)
+      {
+        tile[i].onclick = function(event){
+          src=array_library[i];
+          tile[prevSelected].style.border = "none";
+          tile[i].style.border = "solid yellow 3px";
+          tile[i].style.width = "32px";
+          tile[i].style.height = "32px";
+          prevSelected = i;
+        }
+      }
+
+      let drawTile = document.querySelectorAll(".drawTile");
+
+      for (let i=0;i<100;i++) 
+      {
+        drawTile[i].onclick = function(event){
+          if (src != "")
+          {
+            drawTile[i].style.backgroundImage = `url(${src})`;
+          }
+          
+        }
+      }
+
+
+    </script>
+
+  </body>
+</html>
